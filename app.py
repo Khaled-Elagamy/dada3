@@ -20,7 +20,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///student.db")
+db = SQL("postgres://default:************@ep-green-butterfly-06445849.us-east-1.postgres.vercel-storage.com:5432/verceldb")
 
 
 @app.after_request
