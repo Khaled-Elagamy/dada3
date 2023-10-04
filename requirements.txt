@@ -2,4 +2,4 @@ cs50
 Flask
 Flask-Session
 requests
-pymongo==3.12.3
+pymongo[srv]
