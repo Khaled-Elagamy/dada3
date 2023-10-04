@@ -44,7 +44,7 @@ except Exception as e:
 users_collection = db['users']
 
 class User:
-    def __init__(self, username, house):
+    def __init__(self, username, house,session_id=None):
         self.username = username
         self.house = house
         self.session_id = session_id
