@@ -16,9 +16,7 @@ app = Flask(__name__)
 app.jinja_env.filters["usd"] = usd
 
 # Configure session to use filesystem (instead of signed cookies)
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+
 
 # Configure CS50 Library to use SQLite database
 #db = SQL("sqlite:///student.db")
@@ -112,7 +110,7 @@ def login():
     """Log user in"""
 
     # Forget any user_id
-    session.clear()
+    
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -132,17 +130,7 @@ def login():
         # Ensure username exists and password is correct
         #if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
             #return apology("invalid username and/or password", 403)
-
-        username = request.form.get("username")
-
-        # Find the user in the "users" collection
-        user = users_collection.find_one({"username": username})
-
-        # Check if the user exists and the password is correct (if applicable)
-        if user:
-            # You can set the user's session here
-            session["user_id"] = str(user["_id"])
-
+        
 
         # Redirect user to home page
         return redirect("/")
