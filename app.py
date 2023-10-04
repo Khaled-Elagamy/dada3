@@ -1,4 +1,4 @@
-import os
+mport os
 
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session
@@ -7,8 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, lookup, usd
-from flask_sqlalchemy import SQLAlchemy
-import dj_database_url
+
 # Configure application
 app = Flask(__name__)
 
@@ -21,9 +20,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-#db = SQL("sqlite:///student.db")
-app.config['SQLALCHEMY_DATABASE_URI'] =os.environ.get("DATABASE_URL")
-db = SQLAlchemy(app)
+db = SQL("sqlite:///student.db")
 
 
 @app.after_request
@@ -112,8 +109,8 @@ def login():
             return apology("choose your house", 403)
 
         # Query database for username
-        db.execute("INSERT INTO students (student, house) VALUES($1, $2)", request.form.get("username"), request.form.get("house"))
-        rows = db.execute("SELECT * FROM students WHERE student = $1", request.form.get("username"))
+        db.execute("INSERT INTO students (student, house) VALUES(?, ?)", request.form.get("username"), request.form.get("house"))
+        rows = db.execute("SELECT * FROM students WHERE student = ?", request.form.get("username"))
 
         # Ensure username exists and password is correct
         #if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
@@ -128,4 +125,3 @@ def login():
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
-
