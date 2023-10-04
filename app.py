@@ -22,7 +22,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "mongodb"
 app.config["SESSION_MONGODB"] = client
 app.config["SESSION_MONGODB_DB"] = 'student'
-app.config["SESSION_MONGODB_COLLECTION"] = 'sessions'  # Set the session type to use MongoDB
+app.config["SESSION_MONGODB_COLLECTION"] = 'users'  # Set the session type to use MongoDB
 
 
 
