@@ -7,6 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, lookup, usd
+from pymongo import MongoClient
 
 # Configure application
 app = Flask(__name__)
@@ -20,7 +21,23 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///student.db")
+#db = SQL("sqlite:///student.db")
+client = MongoClient(os.getenv("DATA_URL"))
+db = client['student']
+
+try:
+    client.admin.command('ping')
+    print("Pinged your deployment. You successfully connected to MongoDB!")
+except Exception as e:
+    print(e)
+
+users_collection = db['users']
+
+class User:
+    def __init__(self, username, house):
+        self.username = username
+        self.house = house
+
 
 
 @app.after_request
@@ -108,16 +125,23 @@ def login():
         elif not request.form.get("house"):
             return apology("choose your house", 403)
 
-        # Query database for username
-        db.execute("INSERT INTO students (student, house) VALUES(?, ?)", request.form.get("username"), request.form.get("house"))
-        rows = db.execute("SELECT * FROM students WHERE student = ?", request.form.get("username"))
+        # Create a new user document and insert it into the MongoDB collection
+        new_user = User(request.form.get("username"), request.form.get("house"))
+        users_collection.insert_one(new_user.__dict__)
 
         # Ensure username exists and password is correct
         #if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
             #return apology("invalid username and/or password", 403)
 
-        # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        username = request.form.get("username")
+
+        # Find the user in the "users" collection
+        user = users_collection.find_one({"username": username})
+
+        # Check if the user exists and the password is correct (if applicable)
+        if user:
+            # You can set the user's session here
+            session["user_id"] = str(user["_id"])
 
         # Redirect user to home page
         return redirect("/")
