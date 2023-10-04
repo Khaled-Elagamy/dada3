@@ -7,6 +7,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from helpers import apology, login_required, lookup, usd
+from flask_sqlalchemy import SQLAlchemy
 
 # Configure application
 app = Flask(__name__)
@@ -20,7 +21,8 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("postgres://default:************@ep-green-butterfly-06445849.us-east-1.postgres.vercel-storage.com:5432/verceldb")
+app.config['SQLALCHEMY_DATABASE_URI'] ="postgres://default:gJs9OeKB5iVH@ep-green-butterfly-06445849.us-east-1.postgres.vercel-storage.com:5432/verceldb")
+db = SQLAlchemy(app)
 
 
 @app.after_request
