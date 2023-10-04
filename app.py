@@ -22,7 +22,7 @@ Session(app)
 
 # Configure CS50 Library to use SQLite database
 #db = SQL("sqlite:///student.db")
-app.config['SQLALCHEMY_DATABASE_URI'] =process.env.DATABASE_URL
+app.config['SQLALCHEMY_DATABASE_URI'] =os.environ.get("DATABASE_URL")
 db = SQLAlchemy(app)
 
 
