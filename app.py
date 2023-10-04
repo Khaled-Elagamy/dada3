@@ -86,6 +86,11 @@ def end():
 @login_required
 def face():
     return render_template("face.html")
+    
+@app.route("/hide")
+@login_required
+def face():
+    return render_template("hide.html")
 
 @app.route("/theclue", methods=["GET", "POST"])
 @login_required
