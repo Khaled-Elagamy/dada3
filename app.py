@@ -15,24 +15,14 @@ app = Flask(__name__)
 # Custom filter
 app.jinja_env.filters["usd"] = usd
 
-client = MongoClient(os.getenv("DATA_URL"))
-
-# Configuration for Flask-Session
+# Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "mongodb"
-app.config["SESSION_MONGODB"] = client
-app.config["SESSION_MONGODB_DB"] = 'student'
-app.config["SESSION_MONGODB_COLLECTION"] = 'sessions'  # Set the session type to use MongoDB
-
-
-
-
+app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
 
 # Configure CS50 Library to use SQLite database
 #db = SQL("sqlite:///student.db")
-#client = MongoClient(os.getenv("DATA_URL"))
+client = MongoClient(os.getenv("DATA_URL"))
 db = client['student']
 
 try:
@@ -150,8 +140,9 @@ def login():
 
         # Check if the user exists and the password is correct (if applicable)
         if user:
-            # Set the user's session here
+            # You can set the user's session here
             session["user_id"] = str(user["_id"])
+
 
         # Redirect user to home page
         return redirect("/")
