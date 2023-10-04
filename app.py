@@ -22,7 +22,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "mongodb"
 app.config["SESSION_MONGODB"] = client
 app.config["SESSION_MONGODB_DB"] = 'student'
-app.config["SESSION_MONGODB_COLLECTION"] = 'users'  # Set the session type to use MongoDB
+app.config["SESSION_MONGODB_COLLECTION"] = 'sessions'  # Set the session type to use MongoDB
 
 
 
@@ -44,10 +44,9 @@ except Exception as e:
 users_collection = db['users']
 
 class User:
-    def __init__(self, username, house,session_id=None):
+    def __init__(self, username, house):
         self.username = username
         self.house = house
-        self.session_id = session_id
 
 
 
@@ -153,9 +152,6 @@ def login():
         if user:
             # Set the user's session here
             session["user_id"] = str(user["_id"])
-            
-            # Update the user's session ID in the User object
-            users_collection.update_one({"_id": user["_id"]}, {"$set": {"session_id": session["user_id"]}})
 
         # Redirect user to home page
         return redirect("/")
