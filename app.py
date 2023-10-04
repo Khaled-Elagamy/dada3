@@ -15,14 +15,17 @@ app = Flask(__name__)
 # Custom filter
 app.jinja_env.filters["usd"] = usd
 
-# Configuration for Flask-Session
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "mongodb"  # Set the session type to use MongoDB
-
 client = MongoClient(os.getenv("DATA_URL"))
 
-# Configure MongoDB for Flask-Session
-app.config["SESSION_MONGODB"] = client  # Replace with your MongoDB connection details
+# Configuration for Flask-Session
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "mongodb"
+app.config["SESSION_MONGODB"] = client
+app.config["SESSION_MONGODB_DB"] = 'student'
+app.config["SESSION_MONGODB_COLLECTION"] = 'sessions'  # Set the session type to use MongoDB
+
+
+
 
 Session(app)
 
