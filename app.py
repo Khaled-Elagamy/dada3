@@ -151,11 +151,11 @@ def login():
 
         # Check if the user exists and the password is correct (if applicable)
         if user:
-        # Set the user's session here
-        session["user_id"] = str(user["_id"])
-        
-        # Update the user's session ID in the User object
-        users_collection.update_one({"_id": user["_id"]}, {"$set": {"session_id": session["user_id"]}})
+            # Set the user's session here
+            session["user_id"] = str(user["_id"])
+            
+            # Update the user's session ID in the User object
+            users_collection.update_one({"_id": user["_id"]}, {"$set": {"session_id": session["user_id"]}})
 
         # Redirect user to home page
         return redirect("/")
